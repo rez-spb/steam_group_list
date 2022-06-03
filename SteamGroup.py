@@ -20,6 +20,7 @@ class SteamGroup:
     REQUEST_TIMEOUT = 3.00  # in seconds
 
     STEAM_IDS = []
+    group_name = None
 
     def __init__(self):
         pass
@@ -50,6 +51,11 @@ class SteamGroup:
 
         for steamid in members.findall('steamID64'):
             self.STEAM_IDS.append(int(steamid.text))
+
+        try:
+            self.group_name = root.xpath("//groupName")[0].text
+        except IndexError:
+            pass
 
         if root.findall('nextPageLink'):
             page += 1
