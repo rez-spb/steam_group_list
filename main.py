@@ -2,7 +2,7 @@
 Simple lister for Steam groups. No API keys.
 """
 
-__version__ = '0.0.4'
+__version__ = '0.1.0'
 __author__ = 'rez_spb'
 __date__ = '2022-06-03'
 
@@ -18,6 +18,7 @@ steam_group = SteamGroup.SteamGroup()
 steam_group.set_url(steam_group_url)
 group_users = steam_group.get_steam_ids()
 group_name = steam_group.group_name
+group_avatar = steam_group.group_avatar
 
 
 def obfuscator(id64):
@@ -45,7 +46,7 @@ table td th {
 th {
     border-bottom: 3px double black;
     }
-td {
+table#userlist td {
     border-bottom: 1px dashed black;
     }
         """
@@ -59,10 +60,16 @@ td {
         <style type="text/css">{style}</style>
     </head>
     <body>
-        <h1>{group_name} User List</h1>
         <table>
+            <tr>
+                <td><img src="{group_avatar}" /></td>
+                <td><h1>{group_name} User List</h1></td>
+            </tr>
+        </table>
+        
+        <table id="userlist">
             <tr><th>#</th><th>avatar</th><th>name</th><th>id64</th></tr>
-""".format(style=style, group_name=group_name)
+""".format(style=style, group_name=group_name, group_avatar=group_avatar)
     footer = "\n</table></body></html>"
     row_template = "<tr><td>{num:02d}</td>" \
                    "<td><img alt='{id64}' src='{avatar}' /></td>" \

@@ -21,6 +21,7 @@ class SteamGroup:
 
     STEAM_IDS = []
     group_name = None
+    group_avatar = None
 
     def __init__(self):
         pass
@@ -54,6 +55,7 @@ class SteamGroup:
 
         try:
             self.group_name = root.xpath("//groupName")[0].text
+            self.group_avatar = root.xpath("//avatarMedium")[0].text
         except IndexError:
             pass
 
