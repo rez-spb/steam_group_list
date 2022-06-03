@@ -2,7 +2,7 @@
 Simple lister for Steam groups. No API keys.
 """
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = 'rez_spb'
 __date__ = '2022-06-03'
 
@@ -11,12 +11,17 @@ import SteamUserInfo
 
 steam_group_url = "https://steamcommunity.com/groups/last-day"  # TODO: param
 avatars = False  # TODO: config/param
+obfuscate_id = True  # TODO: config/param
 users = []
 
 steam_group = SteamGroup.SteamGroup()
 steam_group.set_url(steam_group_url)
 group_users = steam_group.get_steam_ids()
 group_name = steam_group.group_name
+
+
+def obfuscator(id64):
+    return f"{id64[:2]}...{id64[-5:]}"
 
 
 def printer_console(users):
@@ -66,7 +71,7 @@ td {
         lines.append(row_template.format(
             num=n, avatar=u_obj.avatar, user=u_obj.username,
             url=f" ({u_obj.custom_url})" if u_obj.custom_url else '',
-            id64=u_obj.id64))
+            id64=obfuscator(u_obj.id64) if obfuscate_id else u_obj.id64))
     print(header + '\n'.join(lines) + footer, file=fd)
 
 
