@@ -38,7 +38,7 @@ class SteamUserInfo:
 
         self.id64 = id64
         self.username = root.xpath("//steamID")[0].text
-        self.avatar = root.xpath("//avatarFull")[0].text
+        self.avatar = root.xpath("//avatarMedium")[0].text
         try:
             self.custom_url = root.xpath("//customURL")[0].text
         except IndexError:
