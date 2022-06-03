@@ -5,10 +5,8 @@ Original Author: TerryDEV (2016)
 https://github.com/bommels/steam-group-members
 """
 
-import xml.etree.ElementTree
 import requests
-from requests.exceptions import Timeout, RequestException
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as et
 
 
 class SteamGroup:
@@ -40,8 +38,8 @@ class SteamGroup:
             return None
 
         try:
-            root = ET.fromstring(response)
-        except xml.etree.ElementTree.ParseError:
+            root = et.fromstring(response)
+        except et.ParseError:
             members = None
             print(response)
         else:
@@ -81,9 +79,9 @@ class SteamGroup:
 
             if response.status_code != 200:
                 return None
-        except Timeout as e:
+        except requests.Timeout as e:
             print(e)
-        except RequestException as e:
+        except requests.RequestException as e:
             print(e)
 
         if response is None:
