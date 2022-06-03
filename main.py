@@ -2,7 +2,7 @@
 Simple lister for Steam groups. No API keys.
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = 'rez_spb'
 __date__ = '2022-06-03'
 
@@ -16,6 +16,7 @@ users = []
 steam_group = SteamGroup.SteamGroup()
 steam_group.set_url(steam_group_url)
 group_users = steam_group.get_steam_ids()
+group_name = steam_group.group_name
 
 
 def printer_console(users):
@@ -32,18 +33,31 @@ def printer_console(users):
 
 def printer_html(users, fd):
     lines = []
+    style = """
+table td th {
+    padding: 1px 3px;
+    }
+th {
+    border-bottom: 3px double black;
+    }
+td {
+    border-bottom: 1px dashed black;
+    }
+        """
     header = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
         <meta http-equiv="content-type" content="application/xml; charset=utf-8" />
-        <title>Steam Group User List</title>
+        <title>{group_name} User List</title>
+        <style type="text/css">{style}</style>
     </head>
     <body>
-        <h1>Steam Group User List</h1>
+        <h1>{group_name} User List</h1>
         <table>
-            <tr><th>#</th><th>avatar</th><th>name</th><th>id64</th></tr>\n"""
+            <tr><th>#</th><th>avatar</th><th>name</th><th>id64</th></tr>
+""".format(style=style, group_name=group_name)
     footer = "\n</table></body></html>"
     row_template = "<tr><td>{num:02d}</td>" \
                    "<td><img alt='{id64}' src='{avatar}' /></td>" \
