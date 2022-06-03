@@ -6,7 +6,7 @@ https://github.com/bommels/steam-group-members
 """
 
 import requests
-import xml.etree.ElementTree as et
+from lxml import etree as et
 
 
 class SteamGroup:
@@ -38,7 +38,7 @@ class SteamGroup:
             return None
 
         try:
-            root = et.fromstring(response)
+            root = et.fromstring(bytes(response, encoding='utf8'))
         except et.ParseError:
             members = None
             print(response)
@@ -55,8 +55,6 @@ class SteamGroup:
             page += 1
             return self.get_steam_ids(page)
 
-        #print('[OK!] Fetched ' + str(len(self.STEAM_IDS)) + ' SteamIDs')
-
         steamids = self.STEAM_IDS
         self.STEAM_IDS = []
 
@@ -66,7 +64,7 @@ class SteamGroup:
         """
         Gets the XML GroupMembers from Steam, no API key required.
         :param page: the page, max 1000 members per page.
-        :return: the reponse, return None is not a valid response.
+        :return: the response, return None is not a valid response.
         """
 
         url = self.XML_URL + '&p=%s' % page
@@ -74,9 +72,6 @@ class SteamGroup:
         response = None
         try:
             response = requests.get(url, timeout=self.REQUEST_TIMEOUT)
-
-            #print('[%s] %s' % (response.status_code, response.url))
-
             if response.status_code != 200:
                 return None
         except requests.Timeout as e:
@@ -91,6 +86,3 @@ class SteamGroup:
 
     def set_url(self, url):
         self.XML_URL = url + '/memberslistxml?xml=1'
-
-
-steamgroup = SteamGroup()
